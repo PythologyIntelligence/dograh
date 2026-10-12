@@ -20,7 +20,7 @@ def normalized(value: Any) -> str | None:
     """Conservative comparison: never silently reinterpret an address or time."""
     if value is None or isinstance(value, bool):
         return None
-    text = re.sub(r"\\s+", " ", str(value)).strip()
+    text = re.sub(r"\s+", " ", str(value)).strip()
     return text.casefold() if text else None
 
 
