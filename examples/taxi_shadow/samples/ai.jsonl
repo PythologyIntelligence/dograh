@@ -1,0 +1,2 @@
+{"contact_id":"FAKE-CALL-001","fleet_id":"DEMO-A","dispatch_system":"smartmove","intent":"new_booking","pickup_address":"18 Queen Street","destination_address":"Airport","pickup_time":"ASAP","passenger_count":2,"vehicle_type":"standard"}
+{"contact_id":"FAKE-CALL-002","fleet_id":"DEMO-B","dispatch_system":"mti","intent":"new_booking","pickup_address":"18 Queen Street","destination_address":"Railway Station","pickup_time":"2026-10-13T07:30:00+13:00","passenger_count":1,"vehicle_type":"standard"}
