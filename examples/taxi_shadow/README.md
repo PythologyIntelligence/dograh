@@ -68,3 +68,33 @@ Outputs a JSON report to standard output. It does not write anything to a databa
 6. Establish quantitative acceptance thresholds **before** any eventual live booking trial. Rollback and transfer-to-human paths are mandatory.
 
 Architecture reference: Amazon Connect supports customer audio streaming via Kinesis Video Streams, recorded audio via S3, and caller-number / contact-ID attributes. The Dograh fork supports inbound telephony and customizable tool workflows, but no passive shadow adapter exists in this prototype.
+
+## Fleet-wide trial strategy (director demonstration)
+
+**Scope: every consenting fleet, both dispatch systems.** Do not limit the programme to one pilot SmartMove fleet and one MTI fleet. Roll out fleet configurations in batches for troubleshooting, but give every fleet an opportunity to test before judging platform readiness. This is a test-coverage decision, not permission to deploy to all real calls at once.
+
+### Fleet registry
+
+For each fleet, configure separately:
+
+- `fleet_id` and business display name
+- incoming Amazon Connect dialled number (DID), and approved test-route identifier
+- dispatch platform (`smartmove` or `mti`) and **read-only** booking/audit source, where authorised
+- service area, pickup landmarks, local pronunciations, geography exceptions, business rules and escalation numbers
+- test-call permissions and manager/reviewer access; scoped storage/retention rules
+- explicit authorisation status for shadow analysis and sandbox phone tests
+
+Use the incoming Amazon Connect number to identify the production fleet; never guess based on the caller's stated location. The simulator may use a dedicated test number with an explicit, authenticated fleet selection; never route tests into live dispatch.
+
+### Two separate fleet-wide tests
+
+1. **Recorded-call shadow comparisons:** For each authorised fleet, independently extract booking details from recorded calls, correlate with independently sourced operator booking records, and flag unresolved mismatches for human review. Only report evaluated, paired calls; exclude unsupported callbacks from booking-accuracy denominators. Publish per-fleet metrics and an overall summary with sample sizes and uncertainty.
+2. **Independent telephone test calls:** Give participating companies an approved test telephone route, clear AI/non-dispatch disclosure, their own simulated fleet persona and booking rules, fake reference numbers, and access to their own results. Include new bookings, prebookings, changes, cancellations, callbacks, unclear accents, rural addresses, special vehicles, multiple calls and outage simulations. Use fictitious test identities and addresses where practical.
+
+### Evaluation and governance
+
+- A mismatch is **not** evidence that an employee was wrong. Review the full call context, later corrections and dispatch status; mark `AI_CORRECT`, `HUMAN_CORRECT`, `BOTH_ACCEPTABLE`, `CHANGED_DURING_CALL`, or `UNRESOLVED`.
+- Keep the programme separate from individual disciplinary investigations. Agree on staff notification, authorised recording use, privacy assessment and fair employment procedures before live-call analysis.
+- Track fleet-by-fleet extraction completeness, match rate on comparable fields, AI-confirmed errors, human-confirmed errors, test-call completion, wrong-fleet routing, duplicate submissions (must be zero in no-dispatch modes), false booking confirmations (must be zero), and callback handling.
+- Run the director demonstration entirely in the isolated test-number/test-database environment. No live job creation, dispatch, cancellation or customer notification.
+- Require explicit authorisation and passing thresholds for each fleet before any future live-booking trial; do not infer readiness for all fleets from an average across fleets.
